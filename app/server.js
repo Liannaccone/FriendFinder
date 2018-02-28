@@ -12,3 +12,23 @@ var PORT = process.env.PORT || 3000;
 // Sets up the Express app to handle data parsing
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// Sets up the Express app to handle data parsing
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// ROUTES
+// =============================================================
+
+require("./routing/apiRoutes.js")(app);
+require("./routes/htmlRoutes.js")(app);
+
+
+
+// LISTENER
+// =============================================================
+
+
+app.listen(PORT, function() {
+	console.log("App listening on PORT: " + PORT);
+});
