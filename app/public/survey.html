@@ -25,7 +25,7 @@
 
               <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" id="name">
+                <input type="text" class="form-control" name="userName" id="name" required>
               </div>
 
               <div class="form-group">
@@ -34,9 +34,9 @@
               </div>
 
               <div class="form-group">
-                <label for="age">Question 1</label>
+                <label for="question1">Question 1</label>
                 <div>
-                  <select name="position" id="quest1-dropdown">
+                  <select name="quest-1" id="quest1-dropdown">
                     <option value="" disabled selected>Select</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -48,9 +48,9 @@
               </div>
 
               <div class="form-group">
-                <label for="force-points">Question 2</label>
+                <label for="question2">Question 2</label>
                 <div>
-                  <select name="position" id="quest2-dropdown">
+                  <select name="quest-2" id="quest2-dropdown">
                     <option value="" disabled selected>Select</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -62,9 +62,9 @@
               </div>
 
               <div class="form-group">
-                <label for="force-points">Question 3</label>
+                <label for="question3">Question 3</label>
                 <div>
-                  <select name="position" id="quest3-dropdown">
+                  <select name="quest-3" id="quest3-dropdown">
                     <option value="" disabled selected>Select</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -76,9 +76,9 @@
               </div>
 
               <div class="form-group">
-                <label for="force-points">Question 4</label>
+                <label for="question4">Question 4</label>
                 <div>
-                  <select name="position" id="quest4-dropdown">
+                  <select name="quest-4" id="quest4-dropdown">
                     <option value="" disabled selected>Select</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -90,9 +90,9 @@
               </div>
 
               <div class="form-group">
-                <label for="force-points">Question 5</label>
+                <label for="question5">Question 5</label>
                 <div>
-                  <select name="position" id="quest5-dropdown">
+                  <select name="quest-5" id="quest5-dropdown">
                     <option value="" disabled selected>Select</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -104,9 +104,9 @@
               </div>
 
               <div class="form-group">
-                <label for="force-points">Question 6</label>
+                <label for="question6">Question 6</label>
                 <div>
-                  <select name="position" id="quest6-dropdown">
+                  <select name="quest-6" id="quest6-dropdown">
                     <option value="" disabled selected>Select</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -118,9 +118,9 @@
               </div>
 
               <div class="form-group">
-                <label for="force-points">Question 7</label>
+                <label for="question7">Question 7</label>
                 <div>
-                  <select name="position" id="quest7-dropdown">
+                  <select name="quest-7" id="quest7-dropdown">
                     <option value="" disabled selected>Select</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -132,9 +132,9 @@
               </div>
 
               <div class="form-group">
-                <label for="force-points">Question 8</label>
+                <label for="question8">Question 8</label>
                 <div>
-                  <select name="position" id="quest8-dropdown">
+                  <select name="quest-8" id="quest8-dropdown">
                     <option value="" disabled selected>Select</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -146,9 +146,9 @@
               </div>
 
               <div class="form-group">
-                <label for="question">Question 9</label>
+                <label for="question9">Question 9</label>
                 <div>
-                  <select name="quest9" id="quest9-dropdown">
+                  <select name="quest-9" id="quest9-dropdown">
                     <option value="" disabled selected>Select</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -160,9 +160,9 @@
               </div>
 
               <div class="form-group">
-                <label for="question">Question 10</label>
+                <label for="question10">Question 10</label>
                 <div>
-                  <select name="quest10" id="quest10-dropdown">
+                  <select name="quest-10" id="quest10-dropdown">
                     <option value="" disabled selected>Select</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -179,7 +179,7 @@
             <br>
 
             <div class="text-right">
-              <button type="submit" class="btn btn-primary btn-md" id="add-btn"><span class="glyphicon glyphicon-ok-circle"></span> Submit</button>
+              <button type="submit" class="btn btn-primary btn-md submit" id="submit"><span class="glyphicon glyphicon-ok-circle"></span> Submit</button>
             </div>
           </div>
         </div>
@@ -189,24 +189,42 @@
   </div>
 
   <script type="text/javascript">
-    // Question: What does this code do?
-    $("#add-btn").on("click", function(event) {
+
+    $(".submit").on("click", function(event) {
       event.preventDefault();
 
       var newFriend = {
         name: $("#name").val().trim(),
         photo: $("#photo").val().trim(),
-        answers: [$("#quest-1")]
+        answers: []
       };
+      if(!newFriend.name || !newFriend.photo){
+        return alert("Please confirm you have entered a name and photo url.")
+      }
+      for (i=1; i<=10; i++){
+        var questAnswer = $(`select[name="quest-${i}"]`).val()
+        if(!questAnswer){
+          return alert("Please respond to each question before proceeding!");
+        }
+        else{
+          newFriend.answers.push(questAnswer)
+        }
+      }
 
-      // Question: What does this code do??
-      $.post("/api/new", newCharacter)
-      .then(function(data) {
-        console.log(data);
-        alert("Adding character...");
+      $.post("/survey", newFriend, function(data) {
+        if(data){
+          alert("Yay!")
+        }
       });
 
+        // clear the form
+        $("#name").val("");
+        $("#photo").val("");
+        // add dropdowns here
+
+
     });
+    
   </script>
 </body>
 </html>

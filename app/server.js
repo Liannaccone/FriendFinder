@@ -13,15 +13,11 @@ var PORT = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Sets up the Express app to handle data parsing
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
 // ROUTES
 // =============================================================
 
 require("./routing/apiRoutes.js")(app);
-require("./routes/htmlRoutes.js")(app);
+require("./routing/htmlRoutes.js")(app);
 
 
 
