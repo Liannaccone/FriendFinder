@@ -204,13 +204,26 @@
       </p>
     </footer>
 
-    <!-- modal -->
-    <div id="simpleModal" class="modal">
+  <!-- Modal -->
+  <div class="modal fade" id="matchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
-      <span class="closeBtn">&times;</span>
-      <p>Not a correct date format. Dates must be formatted 'MM/DD/YYYY' or 'N/A'</p>
-      </div>  
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h2 class="modal-title" id="myModalLabel">You matched with.....</h2>
+        </div>
+        <div class="modal-body">
+          <h1 id="matchName"></h1>
+          <hr>
+          <img id="matchImage" src="" class="img-responsive img-rounded">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
     </div>
+  </div>
 
   </div>
 
@@ -225,7 +238,7 @@
         answers: []
       };
       if(!newFriend.name || !newFriend.photo){
-        return alert("Please confirm you have entered a name and photo url.")
+        return alert("Please confirm you have entered a name and photo URL.")
       }
       for (i=1; i<=10; i++){
         var questAnswer = $(`select[name="quest-${i}"]`).val()
@@ -239,7 +252,9 @@
 
       $.post("/survey", newFriend, function(data) {
         if(data){
-          alert(data)
+          $('#matchModal').modal('show');
+          $("#matchName").text(data.curMatch);
+          $("#matchImage").attr("src",data.curMatchPhoto);
         }
       });
 

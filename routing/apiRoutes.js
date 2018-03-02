@@ -8,8 +8,11 @@ module.exports = function(app) {
 		var newFriendPhoto = req.body.photo;
 		var newFriendAnswers = req.body.answers;
 		// vaiable to hold friendsArray.name of the current match
-		var curMatch;
-		var curMatchPhoto;
+		var match = {
+			curMatch: "",
+			curMatchPhoto:""
+		}
+
 		// variable set to an arbitrary high number, lowered as user iterates through potential matches if curFriendScore < matchScore, then matchScore = curFriendScore
 		var matchScore = 1000
 		for (i = 0; i<friendsArray.length; i++){
@@ -22,14 +25,15 @@ module.exports = function(app) {
 				curFriendScore += diff
 			}
 			if(curFriendScore < matchScore) {
-				curMatch = friendsArray[i].name;
-				curMatchPhoto = friendsArray[i].photo;
+				match.curMatch = friendsArray[i].name;
+				match.curMatchPhoto = friendsArray[i].photo;
 				matchScore = curFriendScore
 			}
 		}
-		console.log(curMatch);
-		console.log(matchScore)
-		res.json("You matched with " + curMatch +"!"+"\n<img src="+ curMatchPhoto +" height=42width=42>")
+		console.log(match);
+		// console.log(matchScore)
+		// res.json("You matched with " + curMatch +"!"+"\n<img src="+ curMatchPhoto +" height=42width=42>")
+		res.json(match)
 	});
 
 
